@@ -12,6 +12,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         Slider _slider;
 
         protected override void Awake () {
+            base.Awake ();
             _slider = GetComponent<Slider> ();
             _slider.onValueChanged.AddListener (OnSliderValueChanged);
         }
