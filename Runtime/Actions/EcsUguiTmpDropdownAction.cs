@@ -12,6 +12,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         TMP_Dropdown _dropdown;
 
         protected override void Awake () {
+            base.Awake ();
             _dropdown = GetComponent<TMP_Dropdown> ();
             _dropdown.onValueChanged.AddListener (OnDropdownValueChanged);
         }

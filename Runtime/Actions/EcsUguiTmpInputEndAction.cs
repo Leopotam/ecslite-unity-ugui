@@ -12,6 +12,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         TMP_InputField _input;
 
         protected override void Awake () {
+            base.Awake ();
             _input = GetComponent<TMP_InputField> ();
             _input.onEndEdit.AddListener (OnInputEnded);
         }
