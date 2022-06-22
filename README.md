@@ -40,6 +40,8 @@
 `EcsUiEmitter` является `MonoBehaviour`-классом, отвечающим за генерацию ECS-событий на основе uGui-событий (нажатие, отпускание, перетаскивание и т.п).
 Должен быть размещен на корневом `GameObject`-е UI-иерархии (или хотя бы на корневом `Canvas`-е) и подключен к ECS-инфраструктуре через инспектор:
 ```c#
+using Leopotam.EcsLite.Unity.Ugui;
+
 public class Startup : MonoBehaviour {
     // Поле должно быть проинициализировано в инспекторе средствами редактора Unity.
     [SerializeField] EcsUguiEmitter _uguiEmitter;
@@ -91,6 +93,8 @@ public class Test1System : IEcsInitSystem {
 ```
 Пример выше можно упростить через `[EcsUguiNamedAttribute]`:
 ```c#
+using Leopotam.EcsLite.Unity.Ugui;
+
 public class Test2System : IEcsInitSystem {
     // Все поля будут автоматически заполнены ссылками
     // на соответствующие компоненты с именованного виджета-действия.
@@ -107,6 +111,8 @@ public class Test2System : IEcsInitSystem {
 ## EcsUguiCallbackSystem
 Эта система дает возможность напрямую подписываться на uGui-события без дополнительного кода:
 ```c#
+using Leopotam.EcsLite.Unity.Ugui;
+
 public class TestUguiClickEventSystem : EcsUguiCallbackSystem {
     [Preserve] // Этот атрибут необходим для сохранения этого метода для il2cpp.
     [EcsUguiClickEvent]
@@ -145,6 +151,9 @@ public class TestUguiClickEventSystem : EcsUguiCallbackSystem {
 ## Компоненты
 ECS-компоненты, описывающие события: `EcsUguiClickEvent`, `EcsUguiBeginDragEvent`, `EcsUguiEndDragEvent` и т.д. - все они являются стандартными ECS-компонентами и могут быть отфильтрованы с помощью `EcsFilter`:
 ```c#
+using Leopotam.EcsLite;
+using Leopotam.EcsLite.Unity.Ugui;
+
 public class TestUguiClickEventSystem : IEcsInitSystem, IEcsRunSystem {
     EcsPool<EcsUguiClickEvent> _clickEventsPool;
     EcsFilter _clickEvents;
