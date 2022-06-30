@@ -78,6 +78,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         }
 
         static void AddDelHereSystems (EcsSystems ecsSystems, string worldName) {
+            ecsSystems.DelHere<EcsUguiDragPotentialEvent> (worldName);
             ecsSystems.DelHere<EcsUguiDragStartEvent> (worldName);
             ecsSystems.DelHere<EcsUguiDragMoveEvent> (worldName);
             ecsSystems.DelHere<EcsUguiDragEndEvent> (worldName);

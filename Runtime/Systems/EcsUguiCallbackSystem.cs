@@ -31,6 +31,10 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         public EcsUguiDownEventAttribute (string widgetName = default, string worldName = default) : base (widgetName, worldName) { }
     }
 
+    public sealed class EcsUguiDragPotentialEventAttribute : EcsUguiEventAttribute {
+        public EcsUguiDragPotentialEventAttribute (string widgetName = default, string worldName = default) : base (widgetName, worldName) { }
+    }
+
     public sealed class EcsUguiDragStartEventAttribute : EcsUguiEventAttribute {
         public EcsUguiDragStartEventAttribute (string widgetName = default, string worldName = default) : base (widgetName, worldName) { }
     }
@@ -95,6 +99,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         List<UguiEventDesc<EcsUguiClickEvent>> _clicks;
         List<UguiEventDesc<EcsUguiUpEvent>> _ups;
         List<UguiEventDesc<EcsUguiDownEvent>> _downs;
+        List<UguiEventDesc<EcsUguiDragPotentialEvent>> _dragPotentials;
         List<UguiEventDesc<EcsUguiDragStartEvent>> _dragStarts;
         List<UguiEventDesc<EcsUguiDragMoveEvent>> _dragMoves;
         List<UguiEventDesc<EcsUguiDragEndEvent>> _dragEnds;
@@ -114,6 +119,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
                 CheckAttribute<EcsUguiClickEventAttribute, EcsUguiClickEvent> (m, systems, this, ref _clicks);
                 CheckAttribute<EcsUguiUpEventAttribute, EcsUguiUpEvent> (m, systems, this, ref _ups);
                 CheckAttribute<EcsUguiDownEventAttribute, EcsUguiDownEvent> (m, systems, this, ref _downs);
+                CheckAttribute<EcsUguiDragPotentialEventAttribute, EcsUguiDragPotentialEvent> (m, systems, this, ref _dragPotentials);
                 CheckAttribute<EcsUguiDragStartEventAttribute, EcsUguiDragStartEvent> (m, systems, this, ref _dragStarts);
                 CheckAttribute<EcsUguiDragMoveEventAttribute, EcsUguiDragMoveEvent> (m, systems, this, ref _dragMoves);
                 CheckAttribute<EcsUguiDragEndEventAttribute, EcsUguiDragEndEvent> (m, systems, this, ref _dragEnds);
