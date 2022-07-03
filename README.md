@@ -46,7 +46,7 @@ public class Startup : MonoBehaviour {
     // Поле должно быть проинициализировано в инспекторе средствами редактора Unity.
     [SerializeField] EcsUguiEmitter _uguiEmitter;
 
-    EcsSystems _systems;
+    IEcsSystems _systems;
 
     void Start () {
         _systems = new EcsSystems (new EcsWorld ());
@@ -66,6 +66,7 @@ public class Startup : MonoBehaviour {
     void OnDestroy () {
         if (_systems != null) {
             _systems.GetWorld ("ugui-events").Destroy ();
+            _systems.Destroy ();
             _systems.GetWorld ().Destroy ();
             _systems = null;
         }
@@ -81,7 +82,7 @@ public class Test1System : IEcsInitSystem {
     Transform _btnTransform;
     Button _btn;
 
-    public void Init (EcsSystems systems) {
+    public void Init (IEcsSystems systems) {
         // Получение ссылки на виджет-действие с именем "MyButton". 
         _btnGo = _ugui.GetNamedObject ("MyButton");
         // Чтение Transform-компонента с него.
@@ -102,7 +103,7 @@ public class Test2System : IEcsInitSystem {
     [EcsUguiNamed("MyButton")] Transform _btnTransform;
     [EcsUguiNamed("MyButton")] Button _btn;
 
-    public void Init (EcsSystems systems) {
+    public void Init (IEcsSystems systems) {
         // Все поля инициализированы и могут быть использованы здесь.
     }
 }
@@ -128,7 +129,7 @@ public class TestUguiClickEventSystem : EcsUguiCallbackSystem {
     }
 }
 ```
-Список поддерживаемых атрибутов действий:
+Список поддерживаемых атрибутов действий (событий uGui):
 ```c#
 [EcsUguiClickEvent]
 [EcsUguiUpEvent]
@@ -158,13 +159,13 @@ public class TestUguiClickEventSystem : IEcsInitSystem, IEcsRunSystem {
     EcsPool<EcsUguiClickEvent> _clickEventsPool;
     EcsFilter _clickEvents;
     
-    public void Init (EcsSystems systems) {
+    public void Init (IEcsSystems systems) {
         var world = systems.GetWorld ();
         _clickEventsPool = world.GetPool<EcsUguiClickEvent> (); 
         _clickEvents = world.Filter<EcsUguiClickEvent> ().End ();
     }
 
-    public void Run (EcsSystems systems) {
+    public void Run (IEcsSystems systems) {
         foreach (var entity in _clickEvents) {
             ref EcsUguiClickEvent data = ref _clickEventsPool.Get (entity);
             Debug.Log ("Im clicked!", data.Sender);

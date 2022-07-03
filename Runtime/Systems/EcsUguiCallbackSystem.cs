@@ -107,7 +107,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         List<UguiEventDesc<EcsUguiTmpInputEndEvent>> _tmpInputEnds;
         List<UguiEventDesc<EcsUguiDropEvent>> _drops;
 
-        public void PreInit (EcsSystems systems) {
+        public void PreInit (IEcsSystems systems) {
             foreach (var m in GetType ().GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
                 if (m.IsStatic) { continue; }
 
@@ -128,7 +128,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
             }
         }
 
-        public virtual void Run (EcsSystems systems) {
+        public virtual void Run (IEcsSystems systems) {
             if (_clicks != null) {
                 foreach (var item in _clicks) {
                     foreach (var entity in item.Filter) {
@@ -243,7 +243,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
             }
         }
 
-        static void CheckAttribute<T1, T2> (MethodInfo m, EcsSystems systems, EcsUguiCallbackSystem system, ref List<UguiEventDesc<T2>> list)
+        static void CheckAttribute<T1, T2> (MethodInfo m, IEcsSystems systems, EcsUguiCallbackSystem system, ref List<UguiEventDesc<T2>> list)
             where T1 : EcsUguiEventAttribute where T2 : struct {
             var attrType = typeof (T1);
             if (Attribute.IsDefined (m, attrType)) {
@@ -251,7 +251,7 @@ namespace Leopotam.EcsLite.Unity.Ugui {
             }
         }
 
-        static void RegisterCallback<T> (EcsUguiEventAttribute attr, MethodInfo methodInfo, EcsSystems systems, EcsUguiCallbackSystem system, ref List<UguiEventDesc<T>> list)
+        static void RegisterCallback<T> (EcsUguiEventAttribute attr, MethodInfo methodInfo, IEcsSystems systems, EcsUguiCallbackSystem system, ref List<UguiEventDesc<T>> list)
             where T : struct {
             var world = systems.GetWorld (attr.WorldName);
             var name = string.IsNullOrEmpty (attr.WidgetName) ? null : attr.WidgetName;
