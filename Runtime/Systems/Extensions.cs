@@ -5,7 +5,6 @@
 
 using System;
 using System.Reflection;
-using Leopotam.EcsLite.ExtendedSystems;
 using UnityEngine;
 
 namespace Leopotam.EcsLite.Unity.Ugui {
@@ -14,6 +13,26 @@ namespace Leopotam.EcsLite.Unity.Ugui {
 
         public EcsUguiNamedAttribute (string name) {
             Name = name;
+        }
+    }
+
+#if ENABLE_IL2CPP
+    [Il2CppSetOption (Option.NullChecks, false)]
+    [Il2CppSetOption (Option.ArrayBoundsChecks, false)]
+#endif
+    sealed class DelUguiEventSystem<T> : IEcsRunSystem where T : struct {
+        readonly EcsFilter _filter;
+        readonly EcsPool<T> _pool;
+
+        public DelUguiEventSystem (EcsWorld world) {
+            _filter = world.Filter<T> ().End ();
+            _pool = world.GetPool<T> ();
+        }
+
+        public void Run (IEcsSystems systems) {
+            foreach (var entity in _filter) {
+                _pool.Del (entity);
+            }
         }
     }
 
@@ -27,10 +46,11 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         /// <param name="skipNoExists">Not throw exception if named action not registered in emitter.</param>
         /// <param name="skipDelHere">Skip DelHere() registration.</param>
         public static IEcsSystems InjectUgui (this IEcsSystems ecsSystems, EcsUguiEmitter emitter, string worldName = null, bool skipNoExists = false, bool skipDelHere = false) {
+            var world = ecsSystems.GetWorld (worldName);
             if (!skipDelHere) {
-                AddDelHereSystems (ecsSystems, worldName);
+                AddDelHereSystems (ecsSystems, world);
             }
-            emitter.SetWorld (ecsSystems.GetWorld (worldName));
+            emitter.SetWorld (world);
             var uiNamedType = typeof (EcsUguiNamedAttribute);
             var goType = typeof (GameObject);
             var componentType = typeof (Component);
@@ -74,21 +94,21 @@ namespace Leopotam.EcsLite.Unity.Ugui {
             return ecsSystems;
         }
 
-        static void AddDelHereSystems (IEcsSystems ecsSystems, string worldName) {
-            ecsSystems.DelHere<EcsUguiDragStartEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiDragMoveEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiDragEndEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiDropEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiClickEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiDownEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiUpEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiEnterEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiExitEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiScrollViewEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiSliderChangeEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiTmpDropdownChangeEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiTmpInputChangeEvent> (worldName);
-            ecsSystems.DelHere<EcsUguiTmpInputEndEvent> (worldName);
+        static void AddDelHereSystems (IEcsSystems ecsSystems, EcsWorld world) {
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiDragStartEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiDragMoveEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiDragEndEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiDropEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiClickEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiDownEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiUpEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiEnterEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiExitEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiScrollViewEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiSliderChangeEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiTmpDropdownChangeEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiTmpInputChangeEvent> (world));
+            ecsSystems.Add (new DelUguiEventSystem<EcsUguiTmpInputEndEvent> (world));
         }
     }
 }
