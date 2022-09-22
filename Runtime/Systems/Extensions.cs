@@ -7,6 +7,10 @@ using System;
 using System.Reflection;
 using UnityEngine;
 
+#if ENABLE_IL2CPP
+using Unity.IL2CPP.CompilerServices;
+#endif
+
 namespace Leopotam.EcsLite.Unity.Ugui {
     public sealed class EcsUguiNamedAttribute : Attribute {
         public readonly string Name;
