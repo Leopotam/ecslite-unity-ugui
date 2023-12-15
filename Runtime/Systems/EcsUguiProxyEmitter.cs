@@ -32,9 +32,18 @@ namespace Leopotam.EcsLite.Unity.Ugui {
             // parent was killed.
             if ((object) _parent != null) { return false; }
 
-            var parent = _searchType == SearchType.InGlobal
-                ? FindObjectOfType<EcsUguiEmitter> ()
-                : GetComponentInParent<EcsUguiEmitter> ();
+            EcsUguiEmitter parent = default;
+            if (_searchType == SearchType.InGlobal) {
+                var validType = typeof (EcsUguiEmitter);
+                foreach (var em in FindObjectsOfType<EcsUguiEmitter> ()) {
+                    if (em.GetType () == validType) {
+                        parent = em;
+                        break;
+                    }
+                }
+            } else {
+                parent = GetComponentInParent<EcsUguiEmitter> ();
+            }
             // fix for GetComponentInParent.
             if (parent == this) { parent = null; }
 #if DEBUG && !LEOECSLITE_NO_SANITIZE_CHECKS
