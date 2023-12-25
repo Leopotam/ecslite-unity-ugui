@@ -16,13 +16,13 @@ namespace Leopotam.EcsLite.Unity.Ugui {
         readonly Dictionary<int, GameObject> _actions = new Dictionary<int, GameObject> (64);
 
         internal void SetWorld (EcsWorld world) {
-#if DEBUG && !LEOECSLITE_NO_SANITIZE_CHECKS
-            if (_world != null) { throw new Exception ("World already attached."); }
-#endif
             _world = world;
         }
 
         public virtual EcsWorld GetWorld () {
+            if (_world != null && !_world.IsAlive ()) {
+                _world = null;
+            }
             return _world;
         }
 
