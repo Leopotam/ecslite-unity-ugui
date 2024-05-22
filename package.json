@@ -4,7 +4,7 @@
     "displayName": "LeoECS Lite uGui Bindings",
     "description": "LeoECS Lite uGui Bindings - поддержка событий uGui в ECS-мире.",
     "unity": "2020.3",
-    "version": "2023.12.22",
+    "version": "2024.5.22",
     "keywords": [
         "leoecslite",
         "leoecs",
