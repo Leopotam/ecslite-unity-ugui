@@ -1,6 +1,8 @@
 # LeoECS Lite uGui Bindings - поддержка событий uGui в ECS-мире
 Интеграция событий uGui в ECS-мир.
 
+> **ВАЖНО!** АКТИВНАЯ РАЗРАБОТКА ПРЕКРАЩЕНА, ВОЗМОЖНО ТОЛЬКО ИСПРАВЛЕНИЕ ОБНАРУЖЕННЫХ ОШИБОК. СОСТОЯНИЕ СТАБИЛЬНОЕ, ИЗВЕСТНЫХ ОШИБОК НЕ ОБНАРУЖЕНО. ЗА НОВЫМ ПОКОЛЕНИЕМ ФРЕЙМВОРКА СТОИТ СЛЕДИТЬ В БЛОГЕ https://leopotam.com/
+
 > Проверено на Unity 2020.3 (зависит от Unity) и содержит asmdef-описания для компиляции в виде отдельных сборок и уменьшения времени рекомпиляции основного проекта.
 
 > **ВАЖНО!** Зависит от [LeoECS Lite](https://github.com/Leopotam/ecslite) - зависимость должна быть установлена до установки этого модуля.
@@ -16,7 +18,7 @@
 * [Лицензия](#Лицензия)
 
 # Социальные ресурсы
-[![discord](https://img.shields.io/discord/404358247621853185.svg?label=enter%20to%20discord%20server&style=for-the-badge&logo=discord)](https://discord.gg/5GZVde6)
+[Блог разработчика](https://leopotam.com/)
 
 # Установка
 
@@ -75,7 +77,7 @@ public class Startup : MonoBehaviour {
 public class Test1System : IEcsInitSystem {
     // Это поле будет автоматически инициализировано
     // ссылкой на экземпляр эмиттера на сцене.
-    readonly EcsUguiEmitter _ugui = default;
+    readonly EcsCustomInject<EcsUguiEmitter> _ugui = default;
     
     GameObject _btnGo;
     Transform _btnTransform;
@@ -174,7 +176,7 @@ public class TestUguiClickEventSystem : IEcsInitSystem, IEcsRunSystem {
 ```
 
 # Лицензия
-Фреймворк выпускается под двумя лицензиями, [подробности тут](./LICENSE.md).
+Пакет выпускается под [MIT-Red лицензией](./LICENSE.md).
 
 В случаях лицензирования по условиям MIT-Red не стоит расчитывать на
 персональные консультации или какие-либо гарантии.
